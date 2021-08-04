@@ -1,0 +1,79 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "index"
+  },
+  "logoInfo": {
+    "title": "住宿系统",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "宿舍管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "房间管理",
+          "href": "room/list",
+          "icon": "fa fa-home",
+          "target": "_self"
+        },
+        {
+          "title": "寝室管理",
+          "href": "",
+          "icon": "fa fa-window-maximize",
+          "target": "_self",
+          "child": [
+            {
+              "title": "入住",
+              "href": "assignments/join/list",
+              "icon": "fa fa-stumbleupon-circle",
+              "target": "_self"
+            },
+            {
+              "title": "退房",
+              "href": "assignments/leave/list",
+              "icon": "fa fa-viacoin",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "文件上传",
+          "href": "file/upload",
+          "icon": "fa fa-home",
+          "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "人员管理",
+      "icon": "fa fa-slideshare",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "管理员",
+          "href": "admin/list",
+          "icon": "fa fa-meetup",
+          "target": "_self"
+        },
+        {
+          "title": "学生",
+          "href": "student/list",
+          "icon": "fa fa-superpowers",
+          "target": "_self"
+        },
+        {
+          "title": "工作人员",
+          "href": "worker/list",
+          "icon": "fa fa-flag-o",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

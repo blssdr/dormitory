@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljp.mapper.RoomDao">
+
+    <resultMap id="RoomMap" type="com.ljp.entity.Room">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="leader_id" property="leaderId"/>
+        <result column="rules" property="rules"/>
+        <result column="count" property="count"/>
+        <result column="state" property="state"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="RoomStudentsMap" type="com.ljp.entity.Room">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="leader_id" property="leaderId"/>
+        <result column="rules" property="rules"/>
+        <result column="count" property="count"/>
+        <result column="state" property="state"/>
+        <result column="remark" property="remark"/>
+        <collection
+                property="students"
+                javaType="ArrayList"
+                ofType="com.ljp.entity.Student"
+                select="com.ljp.mapper.StudentDao.getStudents"
+                column="id"></collection>
+    </resultMap>
+
+    <select id="getRoom" resultMap="RoomMap">
+        select * from tb_room where id = #{room_id};
+    </select>
+<!--查找语句标准-->
+    <sql id="RoomFindCriteria">
+        <where>
+            <if test="id != null">and id=#{id}</if>
+            <if test="name != null and name != ''">and name=#{name}</if>
+            <if test="leaderId != null">and leader_id=#{leaderId}</if>
+            <if test="rules != null">and rules=#{rules}</if>
+            <if test="count != null">and count=#{count}</if>
+            <if test="state != null and state != ''">and state=#{state}</if>
+            <if test="remark != null and remark != ''">and remark=#{remark}</if>
+        </where>
+    </sql>
+<!--更新语句标准-->
+    <sql id="RoomUpdateCriteria">
+        <set>
+            <if test="updateId != null">id=#{id},</if>
+            <if test="updateName != null and updateName != ''">name=#{updateName},</if>
+            <if test="updateLeaderId != null">leader_id=#{updateLeaderId},</if>
+            <if test="updateRules != null">rules=#{updateRules},</if>
+            <if test="updateCount != null">count=#{updateCount},</if>
+            <if test="updateState != null and updateState != ''">state=#{updateState},</if>
+            <if test="updateRemark != null and updateRemark != ''">remark=#{updateRemark},</if>
+        </set>
+    </sql>
+
+<!-- keyProperty="id" useGeneratedKeys="true" mysql自增长序列 插入数据获得主键 -->
+    <insert id="create" parameterType="com.ljp.entity.Room" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_room(name,leader_id,rules,count,state,remark)
+        values (#{name},#{leaderId},#{rules},#{count},#{state},#{remark})
+    </insert>
+    
+    <delete id="delete">
+        delete from tb_room
+        <include refid="RoomFindCriteria"></include>
+    </delete>
+
+    <select id="count" resultType="int">
+        select count(1) from tb_room
+        <include refid="RoomFindCriteria"></include>
+    </select>
+    
+    <select id="query" resultMap="RoomStudentsMap">
+        select * from tb_room
+        <include refid="RoomFindCriteria"></include>
+    </select>
+    
+    <select id="detail" resultMap="RoomMap">
+        select * from tb_room
+        <include refid="RoomFindCriteria"></include>
+        limit 1
+    </select>
+    
+    <update id="update">
+        update tb_room
+        <include refid="RoomUpdateCriteria"></include>
+        <include refid="RoomFindCriteria"></include>
+    </update>
+
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljp.mapper.StudentDao">
+
+    <resultMap id="StudentRoomMap" type="com.ljp.entity.Student">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="classes" property="classes"/>
+        <result column="room_id" property="roomId"/>
+        <result column="state" property="state"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <association property="room"
+                     javaType="com.ljp.entity.Room"
+                     column="room_id"
+                     select="com.ljp.mapper.RoomDao.getRoom">
+        </association>
+    </resultMap>
+    <resultMap id="StudentMap" type="com.ljp.entity.Student">
+        <id column="id" property="id"/>
+        <result column="account" property="account"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="sex" property="sex"/>
+        <result column="classes" property="classes"/>
+        <result column="room_id" property="roomId"/>
+        <result column="state" property="state"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+    </resultMap>
+
+    <select id="getStudents" resultMap="StudentMap">
+        select * from tb_student where room_id = #{id};
+    </select>
+    
+<!--查找语句标准-->
+    <sql id="StudentFindCriteria">
+        <where>
+            <if test="id != null">and id=#{id}</if>
+            <if test="account != null and account != ''">and account=#{account}</if>
+            <if test="password != null and password != ''">and password=#{password}</if>
+            <if test="name != null and name != ''">and name=#{name}</if>
+            <if test="phone != null and phone != ''">and phone=#{phone}</if>
+            <if test="sex != null and sex != ''">and sex=#{sex}</if>
+            <if test="classes != null and classes != ''">and classes=#{classes}</if>
+            <if test="roomId != null">and room_id=#{roomId}</if>
+            <if test="state != null and state != ''">and state=#{state}</if>
+            <if test="startTime != null">and start_time=#{startTime}</if>
+            <if test="endTime != null">and end_time=#{endTime}</if>
+        </where>
+    </sql>
+<!--更新语句标准-->
+    <sql id="StudentUpdateCriteria">
+        <set>
+            <if test="updateId != null">id=#{updateId},</if>
+            <if test="updateAccount != null and updateAccount != ''">account=#{updateAccount},</if>
+            <if test="updatePassword != null and updatePassword != ''">password=#{updatePassword},</if>
+            <if test="updateName != null and updateName != ''">name=#{updateName},</if>
+            <if test="updatePhone != null and updatePhone != ''">phone=#{updatePhone},</if>
+            <if test="updateSex != null and updateSex != ''">sex=#{updateSex},</if>
+            <if test="updateClasses != null and updateClasses != ''">classes=#{updateClasses},</if>
+            <if test="updateRoomId != null">room_id=#{updateRoomId},</if>
+            <if test="updateState != null and updateState != ''">state=#{updateState},</if>
+            <if test="updateStartTime != null">start_time=#{updateStartTime},</if>
+            <if test="updateEndTime != null">end_time=#{updateEndTime},</if>
+        </set>
+    </sql>
+
+<!-- keyProperty="id" useGeneratedKeys="true" mysql自增长序列 插入数据获得主键 -->
+    <insert id="create" parameterType="com.ljp.entity.Student" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_student(account,password,name,phone,sex,classes,room_id,state,start_time,end_time)
+        values (#{account},#{password},#{name},#{phone},#{sex},#{classes},#{roomId},#{state},#{startTime},#{endTime})
+    </insert>
+    
+    <delete id="delete">
+        delete from tb_student
+        <include refid="StudentFindCriteria"></include>
+    </delete>
+
+    <select id="count" resultType="int">
+        select count(1) from tb_student
+        <include refid="StudentFindCriteria"></include>
+    </select>
+    
+    <select id="query" resultMap="StudentRoomMap">
+        select * from tb_student
+        <include refid="StudentFindCriteria"></include>
+    </select>
+    
+    <select id="detail" resultMap="StudentMap">
+        select * from tb_student
+        <include refid="StudentFindCriteria"></include>
+        limit 1
+    </select>
+    
+    <update id="update">
+        update tb_student
+        <include refid="StudentUpdateCriteria"></include>
+        <include refid="StudentFindCriteria"></include>
+    </update>
+
+</mapper>
